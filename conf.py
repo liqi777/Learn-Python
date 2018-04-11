@@ -16,12 +16,19 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import sys
+import os
+import shlex
+
+import recommonmark
+from recommonmark.parser import CommonMarkParser
+from recommonmark.transform import AutoStructify
 
 # -- Project information -----------------------------------------------------
 
 project = u'Learn Python'
 copyright = u'2018, hello'
-author = u'hello'
+author = u'Liqi'
 
 # The short X.Y version
 version = u''
@@ -39,6 +46,9 @@ release = u'hello'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.mathjax',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -51,7 +61,8 @@ source_suffix = ['.rst', '.md']
 #source_suffix = '.rst'
 
 source_parsers = {
-   '.md': 'recommonmark.parser.CommonMarkParser',
+   #'.md': 'recommonmark.parser.CommonMarkParser',
+    '.md' : CommonMarkParser
 }
 
 # The master toctree document.
@@ -157,3 +168,13 @@ texinfo_documents = [
      author, 'LearnPython', 'One line description of project.',
      'Miscellaneous'),
 ]
+
+def setup(app):
+    app.add_config_value('recommonmark_config', {
+        #'url_resolver': lambda url: github_doc_root + url,
+        'auto_toc_tree_section': 'Contents',
+        'enable_eval_rst': True,
+        'enable_auto_doc_ref': True,
+    }, True)
+    app.add_transform(AutoStructify)
+
